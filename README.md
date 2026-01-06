@@ -34,7 +34,10 @@ A simple, lightweight faucet for Kaspa testnet-12 written in Rust. It provides a
    kaspad_url = "127.0.0.1:16210"
    port = 3010
    faucet_private_key = "YOUR_PRIVATE_KEY_HERE"
-   amount_per_claim = 100000000  # 0.001 KAS in sompis
+   # amount_per_claim can be specified as:
+   # - sompi (u64): 100000000
+   # - or KAS decimal (string/number): "1.00000000" or 1.0
+   amount_per_claim = "0.01000000"
    claim_interval_seconds = 3600      # 1 hour
    ```
 
@@ -53,7 +56,7 @@ Simple HTML welcome page.
 {
   "active": true,
   "faucet_address": "kaspatest:...",
-  "balance_kas": "12345678",
+  "balance_kas": "123.45678000",
   "next_claim_seconds": 3600
 }
 ```
@@ -70,7 +73,7 @@ Success response:
 ```json
 {
   "transaction_id": "abcd1234...",
-  "amount_kas": "100000000",
+  "amount_kas": "0.01000000",
   "next_claim_seconds": 3600
 }
 ```

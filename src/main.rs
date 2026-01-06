@@ -29,6 +29,13 @@ use config::Config;
 
 const INDEX_HTML: &str = include_str!("../static/index.html");
 
+fn format_kas_from_sompi(amount_sompi: u64) -> String {
+    const SOMPI_PER_KAS: u64 = 100_000_000;
+    let whole = amount_sompi / SOMPI_PER_KAS;
+    let frac = amount_sompi % SOMPI_PER_KAS;
+    format!("{}.{:08}", whole, frac)
+}
+
 #[derive(Serialize)]
 struct StatusResponse {
     active: bool,
@@ -167,7 +174,7 @@ async fn status_handler(
     Ok(Json(StatusResponse {
         active: true,
         faucet_address: state.faucet_address.to_string(),
-        balance_kas: balance.to_string(),
+        balance_kas: format_kas_from_sompi(balance),
         next_claim_seconds: state.claim_interval_seconds,
     }))
 }
@@ -206,7 +213,7 @@ async fn claim_handler(
 
     Ok(Json(ClaimResponse {
         transaction_id: tx_id.to_string(),
-        amount_kas: state.amount_per_claim.to_string(),
+        amount_kas: format_kas_from_sompi(state.amount_per_claim),
         next_claim_seconds: state.claim_interval_seconds,
     }))
 }
